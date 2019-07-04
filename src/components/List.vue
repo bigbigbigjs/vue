@@ -1,58 +1,21 @@
 <template>
   <div class="newsList">
     <ul>
-      <li>
-        <router-link to="detail/1">
-          <h2>1.IU小姐姐</h2>
-          <p>女神女神</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/2">
-          <h2>2.IU女神</h2>
-          <p>小姐姐</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/3">
-          <h2>3.IU小改改</h2>
-          <p>女神女神</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/4">
-          <h2>4.IU女神</h2>
-          <p>女神</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/5">
-          <h2>5.IU小姐姐</h2>
-          <p>女神</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/6">
-          <h2>6.IU女神</h2>
-          <p>女神</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/7">
-          <h2>7.IU小姐姐</h2>
-          <p>女神</p>
-        </router-link>
-      </li>
-      <li>
-        <router-link to="detail/8">
-          <h2>8.IU女神</h2>
-          <p>女神</p>
+      <li v-for="(item) of list" :key="item.id">
+        <router-link 
+        :to="{name:'detail',params:{id:item.id}}">
+          <h2>{{item.id}}.{{item.title}}</h2>
+          <p>{{item.name}}</p>
         </router-link>
       </li>
     </ul>
   </div>
 </template>
-
+<script>
+export default {
+  props:['list','dataName']
+}
+</script>
 <style scoped>
 .content .newsList{width:6.4rem; margin:0 auto;}
 .newsList ul{ padding:0 0.4rem;}

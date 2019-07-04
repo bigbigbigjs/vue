@@ -1,18 +1,18 @@
 <template>
   <div class="content">
     <div class="header">
-      <h2><img src="../assets/img/headimg.png" alt=""/></h2>
+      <h2><img :src="baseUrl + data.icon " alt=""/></h2>
       <div class="user-box">
-        <a href="login_m.html">昵称|</a>
-        <a href="reg_m.html">注销</a>
+        <a href="#">{{data.nikename}}</a>
+        <a href="javascript:;" @click="logout">注销</a>
       </div>
       <ul class="clear">
         <li>
-          <span>0</span>
+          <span>{{data.follow}}</span>
           <p>关注</p>
         </li>
         <li>
-          <span>0</span>
+          <span>{{data.fans}}</span>
           <p class="end">粉丝</p>
         </li>
       </ul>
@@ -52,17 +52,43 @@
   </div>
 </template>
 <script>
-  export default{
-    beforeRouteEnter(to,from,next){
-      console.log('user beforeRouteEnter')
-      if(Math.random()<.5){
-        next()
-        }else{
-        next("/login")
-        }
+export default {
+  data(){
+    return {
+      data:{}
     }
+  },
+  methods:{
+    logout(){
+      axios({
+        url:'/api/logout',
+        method:'put'
+      }).then(
+        res=>{
+          if(res.data.err===0){
+            this.$router.push('/login')
+          }
+        }
+      )
+    }
+  },
+  beforeRouteEnter(to,from,next){
+    axios({
+      url:'/api/user'
+    }).then(
+      res=>{
+        if(res.data.err===1){
+          next('/login')
+        }else{
+          next((_this)=>{_this.data=res.data.data})
+        }
+      }
+    )
   }
+}
 </script>
+
 <style scoped>
 @import url('../assets/css/user.css');
+
 </style>

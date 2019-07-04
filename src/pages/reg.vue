@@ -13,21 +13,51 @@
     </div>
     <ul>
       <li class="lifirst">
-        <input type="text" value=""/>
+        <input type="text" v-model="username">
         <span>帐号</span>
       </li>
       <li>
-        <input type="text" value=""/>
+        <input type="password" v-model="password">
         <span>密码</span>
       </li>
     </ul>
     <div class="footbox">
-      <input type="button" value="注 册" class="login-btn"/>
-      <a href="javascript:;" class="tishi">忘记密码？</a>
+      <input type="button" value="注 册" class="login-btn" @click="reg"/>
+      <a href="javascript:;" class="tishi">忘记密码?</a>
+      <i>{{mess}}</i>
     </div>
   </div>
 </template>
-<style scoped>
+<script>
+export default {
+  data(){
+    return {
+      username:'',
+      password:'',
+      mess:''
+    }
+  },
+  methods:{
+    reg(){
+      axios({
+        url:'/api/reg',
+        method:'post',
+        data:{username:this.username,password:this.password}
+      }).then(
+        res=>{
+          if(res.data.err===0){
+            this.$router.push('/login')
+          }else{
+            this.mess = res.data.mess
+          }
+        }
+      )
+    }
+  }
+}
+</script>
+
+<style  scoped>
   body{ background:#f2f4f5;}
   .content{max-width:6.4rem; margin:0 auto;}
   .content .fhbtn{ padding-top:0.27rem;}
@@ -45,6 +75,7 @@
   .content ul li input{ padding-left:1.24rem;width:4.54rem;height:100%; font-size:0.4rem;}
   .content ul li span{width:1.23rem;height:0.49rem; position:absolute;top:0.26rem;left:0; border-right:1px solid #676868; color:#676868; font-size:0.25rem; line-height:0.49rem; text-align:center;}
   .content .footbox{width:4.65rem;height:0.65rem;margin:0 auto; }
+  .content .footbox i{color:red;}
   .content .login-btn{width:4.65rem;height:0.65rem; background:#4c4f50; color:#fff; text-align:center; line-height:0.65rem; border-radius:8px; display:block; margin-top:0.62rem; font-size:0.28rem;}
   .content .tishi{width:1.4rem; font-size:0.25rem; margin-top:0.28rem; display:block;}
   </style>

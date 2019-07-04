@@ -5,13 +5,13 @@
         <li class="l-btn" @click="goback"></li>
       </ul>
     </div>
-    <div class="content">
-      <div class="header clear"><h2><img src="../assets/img/head.png" alt=""/></h2><p>作者名字</p></div>
+    <div v-if="detail" class="content">
+      <!-- ../assets/img/head.png -->
+      <div class="header clear"><h2><img :src="detail.auth_icon" alt=""/></h2><p>{{detail && detail.auth}}</p></div>
       <div class="cont">
-        <h3>习近平1：弘扬宪法精神推动宪法实施</h3>
-        <div class="time"><p>2019年12月04日 20:35:58 <span><img src="../assets/img/zan.png" alt=""/></span></p></div>
-        <div class="text-box">推进职业教育现代化座谈会12月2日在京召开。中共中央政治局常委、国务院总理李克强作出重要批示。批示指出：加快发展现代职业教育
-          推进职业教育现代化座谈会12月2日在京召开。中共中央政治局常委、国务院总理李克强作出重要批示。批示指出：加快发展现代职业教育</div>
+        <h3>{{detail.title}}</h3>
+        <div class="time"><p>{{detail.time}} <span><img src="../assets/img/zan.png" alt=""/></span></p></div>
+        <div class="text-box" v-html="detail.content"></div>
       </div>
     </div>
     <div class="foot-btn">
@@ -33,14 +33,33 @@
   </div>
 </template>
 <script>
-  export default {
-    methods:{
-      goback(){
-        this.$router.go(-1)
-      }
+export default {
+  name:'Detail',
+  data(){
+    return {
+      detail:{}
     }
+  },
+  methods:{
+    goback(){
+      this.$router.go(-1)
+    }
+  },
+  mounted(){
+
+    // this.$root.$data.bNav = false;
+    // this.$root.$data.bFoot = false;
+
+    let id = this.$route.params.id
+    axios({
+      url:'http://rap2api.taobao.org/app/mock/223685/xy',
+    }).then(
+      res=>this.detail = res.data.xuyan[id-1]
+    )
   }
+}
 </script>
+
 <style scoped>
   html,body{ overflow-x: hidden; }
   .nav{width:100%; position:fixed;top:0;left:0; background:#fff; border-bottom:1px solid #e8eaec; z-index:99;}

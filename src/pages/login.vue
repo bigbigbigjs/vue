@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <p class="fhbtn"><a href="javascript:window.history.go(-1);"></a>
+    <p class="fhbtn">
+      <a href="javascript:;" onclick="window.history.go(-1)"></a>
     </p>
     <h1></h1>
     <div class="login-box">
@@ -14,20 +15,49 @@
     </div>
     <ul>
       <li class="lifirst">
-        <input type="text" value="">
+        <input type="text" v-model="username">
         <span>帐号</span>
       </li>
       <li>
-        <input type="text" value="">
+        <input type="text" v-model="password">
         <span>密码</span>
       </li>
     </ul>
     <div class="footbox">
-      <input type="button" value="登 录" class="login-btn">
+      <input type="button" value="登 录" class="login-btn" @click="login">
       <a href="javascript:;" class="tishi">忘记密码？</a>
     </div>
   </div>
 </template>
+<script>
+export default {
+  data(){
+    return {
+      username:'',
+      password:'',
+      mess:''
+    }
+  },
+  methods:{
+    login(){
+      axios({
+        url:'/api/login',
+        method:'post',
+        data:{username:this.username,password:this.password,save:true}
+      }).then(
+        res=>{
+          if(res.data.err===0){
+            this.$router.push('/user')
+          }else{
+            this.mess = res.data.mess
+          }
+        }
+      )
+    }
+  }
+}
+</script>
+
 <style scoped>
   body{ background:#f2f4f5;}
   .content{max-width:6.4rem; margin:0 auto;}
